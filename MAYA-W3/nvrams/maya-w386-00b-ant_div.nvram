@@ -5,6 +5,8 @@
 # 1/23/2024 updated based on cyw955513wlipa_rev2_52_tag129 nvram
 # 9/19/2024: updated based on tag295 build
 # 1/14/2025: Board Limits PPR updated by u-blox
+# 9/3/2025: add RFSW_CTRL_4 for antenna diversity
+# 12/3/2025: removed dynamic desense params as per IFX-251119-1920827
 NVRAMRev=$Rev: a94ed16d5bf44d73f1c29d22e8be1505c1db24b9 $
 sromrev=11
 boardrev=0x1252
@@ -122,6 +124,7 @@ fdss_level_2g=4
 
 #FIXME: fdss level for 6G made same as 5G for now
 fdss_level_6g=9
+fdss_enable_tbppdu=1
 
 #LPB related : FIXME Enable later
 leg_preamble_boost=12,12,0
@@ -250,12 +253,12 @@ ltecxfnsel=0x44
 ltecxgcigpio=0x04
 
 # SWCTRL Related
-swctrlmap_5g=0x0c0c0c0c,0x02020202,0x0c0c0c0c,0x04000c,0x00e
+swctrlmap_5g=0x1c0c1c0c,0x12021202,0x1c0c1c0c,0x04000c,0x00e
 swctrlmapext_5g=0x00000000,0x00000000,0x00000000,0x000000,0x000
 fem_table_init_val=0x0a0a0a0a,0x0c0c0c0c
 fem_table_init_val_ext=0x00000000,0x00000000
 
-swctrlmap_2g=0x0a0a0a0a,0x0c0c0c0c,0x0a0a0a0a,0x04000c,0x10e
+swctrlmap_2g=0x1a0a1a0a,0x1c0c1c0c,0x1a0a1a0a,0x04000c,0x10e
 swctrlmapext_2g=0x00000000,0x00000000,0x00000000,0x000000,0x000
 
 clb2gslice0core0=0xc
@@ -329,7 +332,7 @@ wb_calref_db_6g20_lut1=26,26,26,26
 wb_gainctrl_nvram_en=1
 wb_target_tssi_2g20=200
 wb_target_tssi_5g20=210,210,210,150
-wb_target_tssi_6g20=75,71,120,-45
+wb_target_tssi_6g20=97,110,100,-45
 wb_fudge_factor_2g5g=1,0,-1,-1,-1
 
 # 2g/5G 2nd PAPD LUT parameters applicable for -40degc
@@ -384,16 +387,6 @@ tvpm_monitor_period=3
 #temperature throttling, aggressive setting
 tvpm_txc_txdc_burst=110,20,5
 
-##Dynamic Desense Params for 2 ant hybrid coex
-btcdyn_flags=3
-btcdyn_dflt_dsns_level=0
-btcdyn_low_dsns_level=1
-btcdyn_mid_dsns_level=2
-btcdyn_high_dsns_level=4
-btcdyn_default_btc_mode=5
-btcdyn_dsns_rows=2
-btcdyn_dsns_row1=5,-4,0,-50,-70
-btcdyn_dsns_row0=5,12,0,-50,-65
 
 ppr_hitemp_offset=70,10
 #            idx 0: PPR temp thresh, default 150
@@ -420,7 +413,7 @@ mcsbw206gpo_1024qam_ht=0x66
 #        6G BW20 HE/VHT temp offset, 0.5dBm/step, rate(C11,C10)
 
 # SWDIV related
-swdiv_en=0 #To enable SW-DIV feature
+swdiv_en=1 #To enable SW-DIV feature
 swdiv_gpio=0
 swdiv_swctrl_en=2
 swdiv_swctrl_ant0=0
@@ -442,9 +435,13 @@ swdiv_snr5g80=296
 swdiv_ap_dead_check=0
 swdiv_ap_div=0
 
-#LPO Select Options
-#lpo_select=4 #External 32768 Hz XO
-#lpo_select=3 #External 32768 Hz XTAL
-#lpo_select=2 #Internal chipset LPO
+##LPO Select Options
+#External 32768 Hz XO
+#lpo_select=4
+#External 32768 Hz XTAL
 lpo_select=3
-int_lpo_margin_frac=240
+#Internal chipset LPO
+#lpo_select=2
+#int_lpo_margin_frac=240
+
+glacial_timer=120

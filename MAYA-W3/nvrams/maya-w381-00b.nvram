@@ -5,6 +5,7 @@
 # 1/23/2024 updated based on cyw955513wlipa_rev2_52_tag129 nvram
 # 9/19/2024: updated based on tag295 build
 # 1/14/2025: Board Limits PPR updated by u-blox
+# 12/3/2025: updated dynamic desense params as per IFX-251119-1920827
 NVRAMRev=$Rev: 093f7cabc8205794696196ff6f4e3d426d654512 $
 sromrev=11
 boardrev=0x1252
@@ -122,6 +123,7 @@ fdss_level_2g=4
 
 #FIXME: fdss level for 6G made same as 5G for now
 fdss_level_6g=9
+fdss_enable_tbppdu=1
 
 #LPB related : FIXME Enable later
 leg_preamble_boost=12,12,0
@@ -329,7 +331,7 @@ wb_calref_db_6g20_lut1=26,26,26,26
 wb_gainctrl_nvram_en=1
 wb_target_tssi_2g20=200
 wb_target_tssi_5g20=210,210,210,150
-wb_target_tssi_6g20=75,71,120,-45
+wb_target_tssi_6g20=97,110,100,-45
 wb_fudge_factor_2g5g=1,0,-1,-1,-1
 
 # 2g/5G 2nd PAPD LUT parameters applicable for -40degc
@@ -385,15 +387,16 @@ tvpm_monitor_period=3
 tvpm_txc_txdc_burst=110,20,5
 
 ##Dynamic Desense Params for 2 ant hybrid coex
-btcdyn_flags=3
+btcdyn_flags=0xf
 btcdyn_dflt_dsns_level=0
 btcdyn_low_dsns_level=1
 btcdyn_mid_dsns_level=2
 btcdyn_high_dsns_level=4
 btcdyn_default_btc_mode=5
-btcdyn_dsns_rows=2
-btcdyn_dsns_row1=5,-4,0,-50,-70
-btcdyn_dsns_row0=5,12,0,-50,-65
+btcdyn_dsns_rows=3
+btcdyn_dsns_row2=5,-4,0,-37,-56
+btcdyn_dsns_row1=5,4,0,-40,-60
+btcdyn_dsns_row0=5,12,0,-46,-69
 
 ppr_hitemp_offset=70,10
 #            idx 0: PPR temp thresh, default 150
@@ -442,9 +445,13 @@ swdiv_snr5g80=296
 swdiv_ap_dead_check=0
 swdiv_ap_div=0
 
-#LPO Select Options
-#lpo_select=4 #External 32768 Hz XO
-#lpo_select=3 #External 32768 Hz XTAL
-#lpo_select=2 #Internal chipset LPO
+##LPO Select Options
+#External 32768 Hz XO
+#lpo_select=4
+#External 32768 Hz XTAL
 lpo_select=3
-int_lpo_margin_frac=240
+#Internal chipset LPO
+#lpo_select=2
+#int_lpo_margin_frac=240
+
+glacial_timer=120
